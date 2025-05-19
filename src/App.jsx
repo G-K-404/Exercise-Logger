@@ -1,19 +1,16 @@
-import Navbar from './Navbar.jsx'
-import Middle from './Middle.jsx'
-import Hero from './hero.jsx'
-import Footer from './Footer.jsx'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-function App() {
-  
-  return (
-  <>
-      <Navbar/>
-      {/* <div className="main-body">
-      <Middle/>
-      </div> */}
-      <Hero/>
-  </>
-  );
-}
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import ScheduleManager from './pages/ScheduleManager';
+import AddExercise from './pages/AddExercise';
 
-export default App
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/schedule" element={<ScheduleManager />} />
+      <Route path="/add-exercise" element={<AddExercise />} />
+    </Routes>
+  </Router>
+);
+
+export default App;
