@@ -7,7 +7,7 @@ const AddExercise = () => {
   e.preventDefault();
 
   try {
-    const response = await fetch(`http://localhost:4000/add-exercise?name=${encodeURIComponent(form.name)}`);
+    const response = await fetch(`https://exercise-requests.onrender.com/add-exercise?name=${encodeURIComponent(form.name)}`);
     const data = await response.json();
 
     if (data.success) {

@@ -4,7 +4,7 @@ import ScheduleCard from '../components/ScheduleCard';
 import ExerciseCard from '../components/ExerciseCard';
 import RepsTracker from '../components/RepsTracker';
 
-const API_BASE = 'http://localhost:4000';
+const API_BASE = 'https://exercise-requests.onrender.com';
 
 const Home = () => {
   const [scheduleToday, setScheduleToday] = useState([]);

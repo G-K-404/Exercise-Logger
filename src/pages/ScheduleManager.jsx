@@ -15,13 +15,13 @@ const ScheduleManager = () => {
   }, [selectedDay]);
 
   const fetchExercises = async () => {
-    const res = await fetch('http://localhost:4000/exercises');
+    const res = await fetch('https://exercise-requests.onrender.com/exercises');
     const data = await res.json();
     setAllExercises(data);
   };
 
   const fetchSchedule = async (day) => {
-    const res = await fetch(`http://localhost:4000/schedule?day=${day}`);
+    const res = await fetch(`https://exercise-requests.onrender.com/schedule?day=${day}`);
     const data = await res.json();
     const exerciseIds = data.map(item => item.exercise_id);
     setSchedule(prev => ({ ...prev, [day]: exerciseIds }));
@@ -29,7 +29,7 @@ const ScheduleManager = () => {
 
   const updateSchedule = async (updated) => {
     setSchedule(prev => ({ ...prev, [selectedDay]: updated }));
-    await fetch('http://localhost:4000/schedule', {
+    await fetch('https://exercise-requests.onrender.com/schedule', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ day: selectedDay, exercise_ids: updated })
