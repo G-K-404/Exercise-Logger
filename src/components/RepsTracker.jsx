@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 
 const RepsTracker = ({ exercise, date }) => {
   const [sets, setSets] = useState({ set_1: '', set_2: '', set_3: '' });
+  const [weights, setWeights] = useState({ weight_1: '', weight_2: '', weight_3: '' });
   const [saved, setSaved] = useState(false);
 
   const handleChange = (e) => {
     setSets({ ...sets, [e.target.name]: e.target.value });
+    setSaved(false);
+  };
+
+  const handleWeightChange = (e) => {
+    setWeights({ ...weights, [e.target.name]: e.target.value });
     setSaved(false);
   };
 
@@ -20,6 +26,9 @@ const RepsTracker = ({ exercise, date }) => {
           set_1: Number(sets.set_1),
           set_2: Number(sets.set_2),
           set_3: Number(sets.set_3),
+          weight_1: weights.weight_1 ? Number(weights.weight_1) : null,
+          weight_2: weights.weight_2 ? Number(weights.weight_2) : null,
+          weight_3: weights.weight_3 ? Number(weights.weight_3) : null,
         }),
       });
 
@@ -37,20 +46,29 @@ const RepsTracker = ({ exercise, date }) => {
   return (
     <div className="bg-dark border border-fluorescent p-4 rounded">
       <h3 className="text-lg font-bold text-fluorescent mb-2">{exercise.exercise_name}</h3>
-      {exercise.weights !== undefined && exercise.weights !== null && (
-        <p className="text-sm text-fluorescent mb-2">Weight: {exercise.weights} kg</p>
-      )}
       <div className="space-y-2">
         {[1, 2, 3].map((i) => (
-          <div key={i}>
-            <label className="block mb-1">Set {i} reps:</label>
-            <input
-              type="number"
-              name={`set_${i}`}
-              value={sets[`set_${i}`]}
-              onChange={handleChange}
-              className="w-full px-3 py-2 bg-black text-white border border-fluorescent rounded"
-            />
+          <div key={i} className="flex gap-4 items-end">
+            <div className="flex-1">
+              <label className="block mb-1">Set {i} reps:</label>
+              <input
+                type="number"
+                name={`set_${i}`}
+                value={sets[`set_${i}`]}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-black text-white border border-fluorescent rounded"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block mb-1">Weight (kg):</label>
+              <input
+                type="number"
+                name={`weight_${i}`}
+                value={weights[`weight_${i}`]}
+                onChange={handleWeightChange}
+                className="w-full px-3 py-2 bg-black text-white border border-fluorescent rounded"
+              />
+            </div>
           </div>
         ))}
         <button

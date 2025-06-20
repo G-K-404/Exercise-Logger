@@ -10,7 +10,7 @@ app.use(express.json());
 app.get('/exercises', async (req, res) => {
   try {
     console.log('Fetching all exercises');
-    const { rows: exercises } = await pool.query('SELECT * FROM exercises');
+    const { rows: exercises } = await pool.query('SELECT * FROM exercises'); // already selects weights if present in table
     console.log(exercises);
     res.json(exercises);
   } catch (error) {
@@ -39,7 +39,7 @@ app.get('/schedule', async (req, res) => {
   const { day } = req.query;
   try {
     const query = `
-      SELECT s.exercise_id, e.exercise_name
+      SELECT s.exercise_id, e.exercise_name, e.weights
       FROM schedule s
       JOIN exercises e ON s.exercise_id = e.exercise_id
       WHERE s.day_of_week = $1
@@ -71,17 +71,18 @@ app.get('/sessions', async (req, res) => {
 
 // Add or update a session
 app.post('/sessions', async (req, res) => {
-  const { exercise_id, exercise_date, set_1, set_2, set_3 } = req.body;
+  const { exercise_id, exercise_date, set_1, set_2, set_3, weight_1, weight_2, weight_3 } = req.body;
   try {
     await pool.query('BEGIN');
     await pool.query(
       `
-      INSERT INTO sessions (exercise_id, exercise_date, set_1, set_2, set_3)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO sessions (exercise_id, exercise_date, set_1, set_2, set_3, weight_1, weight_2, weight_3)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       ON CONFLICT (exercise_id, exercise_date)
-      DO UPDATE SET set_1 = EXCLUDED.set_1, set_2 = EXCLUDED.set_2, set_3 = EXCLUDED.set_3
+      DO UPDATE SET set_1 = EXCLUDED.set_1, set_2 = EXCLUDED.set_2, set_3 = EXCLUDED.set_3,
+        weight_1 = EXCLUDED.weight_1, weight_2 = EXCLUDED.weight_2, weight_3 = EXCLUDED.weight_3
       `,
-      [exercise_id, exercise_date, set_1, set_2, set_3]
+      [exercise_id, exercise_date, set_1, set_2, set_3, weight_1, weight_2, weight_3]
     );
     await pool.query('COMMIT');
     res.json({ success: true });
@@ -91,7 +92,6 @@ app.post('/sessions', async (req, res) => {
     res.status(500).json({ error: 'Failed to log session' });
   }
 });
-
 
 // Update schedule for a day
 app.post('/schedule', async (req, res) => {
@@ -109,7 +109,5 @@ app.post('/schedule', async (req, res) => {
     res.status(500).json({ error: 'Failed to update schedule' });
   }
 });
-
-
 
 app.listen(4000, () => console.log('Server running at https://exercise-requests.onrender.com'));
