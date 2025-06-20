@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 
 const AddExercise = () => {
-  const [form, setForm] = useState({ name: '', description: '' });
+  const [form, setForm] = useState({ name: '', description: '', weights: '' });
 
   const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const response = await fetch(`https://exercise-requests.onrender.com/add-exercise?name=${encodeURIComponent(form.name)}`);
+    const response = await fetch(`https://exercise-requests.onrender.com/add-exercise?name=${encodeURIComponent(form.name)}&weights=${encodeURIComponent(form.weights)}`);
     const data = await response.json();
 
     if (data.success) {
       console.log('Exercise added:', form.name);
-      setForm({ name: '', description: '' });
+      setForm({ name: '', description: '', weights: '' });
     } else {
       console.error('Failed to add exercise:', data.error);
     }
@@ -37,6 +37,13 @@ const AddExercise = () => {
           placeholder="Description"
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
+        />
+        <input
+          className="bg-dark p-2 w-full rounded"
+          placeholder="Weights (kg)"
+          type="number"
+          value={form.weights}
+          onChange={(e) => setForm({ ...form, weights: e.target.value })}
         />
         <button className="bg-fluorescent text-black px-4 py-2 rounded">Add Exercise</button>
       </form>

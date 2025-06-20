@@ -21,12 +21,13 @@ app.get('/exercises', async (req, res) => {
 
 // Add new exercise via GET request
 app.get('/add-exercise', async (req, res) => {
-  const { name } = req.query;
+  const { name, weights } = req.query;
   if (!name) {
     return res.status(400).json({ error: 'Exercise name is required' });
   }
   try {
-    await pool.query('INSERT INTO exercises (exercise_name) VALUES ($1)', [name]);
+    // Insert weights if provided, else default to null
+    await pool.query('INSERT INTO exercises (exercise_name, weights) VALUES ($1, $2)', [name, weights ? parseInt(weights) : null]);
     res.json({ success: true, message: 'Exercise added successfully' });
   } catch (error) {
     console.error(error);

@@ -37,6 +37,9 @@ const RepsTracker = ({ exercise, date }) => {
   return (
     <div className="bg-dark border border-fluorescent p-4 rounded">
       <h3 className="text-lg font-bold text-fluorescent mb-2">{exercise.exercise_name}</h3>
+      {exercise.weights !== undefined && exercise.weights !== null && (
+        <p className="text-sm text-fluorescent mb-2">Weight: {exercise.weights} kg</p>
+      )}
       <div className="space-y-2">
         {[1, 2, 3].map((i) => (
           <div key={i}>

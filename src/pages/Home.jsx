@@ -48,7 +48,7 @@ const Home = () => {
                 key={ex.exercise_id}
                 className="flex justify-between items-center bg-dark border border-fluorescent px-4 py-2 rounded"
               >
-                <span>{ex.exercise_name}</span>
+                <span>{ex.exercise_name} {ex.weights !== undefined && ex.weights !== null ? `| Weight: ${ex.weights} kg` : ''}</span>
                 <button
                   className="bg-fluorescent text-black px-2 py-1 rounded hover:bg-blue-400"
                   onClick={() => setSelectedExercise(ex)}
@@ -70,7 +70,7 @@ const Home = () => {
             key={ex.exercise_id}
             className="flex justify-between items-center bg-black border border-fluorescent px-4 py-2 rounded"
           >
-            <span>{ex.exercise_name}</span>
+            <span>{ex.exercise_name} {ex.weights !== undefined && ex.weights !== null ? `| Weight: ${ex.weights} kg` : ''}</span>
             <button
               onClick={() => setSelectedExercise(ex)}
               className="bg-fluorescent text-black px-2 py-1 rounded hover:bg-blue-300"

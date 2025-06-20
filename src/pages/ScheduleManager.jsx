@@ -60,7 +60,7 @@ const ScheduleManager = () => {
               checked={(schedule[selectedDay] || []).includes(ex.exercise_id)}
               onChange={() => toggleExercise(ex.exercise_id)}
             />
-            <span>{ex.exercise_name}</span>
+            <span>{ex.exercise_name}{ex.weights !== undefined && ex.weights !== null ? ` | Weight: ${ex.weights} kg` : ''}</span>
           </label>
         ))}
       </div>
